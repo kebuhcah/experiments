@@ -97,7 +97,7 @@ class Game extends React.Component {
 
     let status;
     if (winner) {
-      status = "Winner: " + winner;
+      status = winner === "Draw" ? "Draw! -_-" : "Winner: " + winner;
     } else {
       status = "Next player: " + (this.state.xIsNext ? "X" : "O");
     }
@@ -117,7 +117,9 @@ class Game extends React.Component {
               onClick={() =>
                 this.setState({ ascending: !this.state.ascending })
               }
-            >{this.state.ascending ? '↓' : '↑'}</button>
+            >
+              {this.state.ascending ? "↓" : "↑"}
+            </button>
           </div>
           <ul>{this.state.ascending ? moves : moves.reverse()}</ul>
         </div>
@@ -143,7 +145,12 @@ function calculateWinner(squares) {
       return squares[a];
     }
   }
-  return null;
+
+  if (squares.some((s) => !s)) {
+    return null;
+  } else {
+    return "Draw";
+  }
 }
 
 // ========================================
