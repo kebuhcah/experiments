@@ -21,25 +21,14 @@ class Board extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+    const rows = [0, 1, 2].map((i) => (
+      <div className="board-row" key={i}>
+        {this.renderSquare(i * 3)}
+        {this.renderSquare(i * 3 + 1)}
+        {this.renderSquare(i * 3 + 2)}
       </div>
-    );
+    ));
+    return <div>{rows}</div>;
   }
 }
 
@@ -55,6 +44,7 @@ class Game extends React.Component {
       ],
       stepNumber: 0,
       xIsNext: true,
+      ascending: true,
     };
   }
 
@@ -98,7 +88,9 @@ class Game extends React.Component {
         : "Go to game start";
       return (
         <li key={move}>
-          <button onClick={() => this.jumpTo(move)}>{this.state.stepNumber === move ? <b>{desc}</b> : desc}</button>
+          <button onClick={() => this.jumpTo(move)}>
+            {this.state.stepNumber === move ? <b>{desc}</b> : desc}
+          </button>
         </li>
       );
     });
@@ -120,7 +112,14 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <ol>{moves}</ol>
+          <div>
+            <button
+              onClick={() =>
+                this.setState({ ascending: !this.state.ascending })
+              }
+            >{this.state.ascending ? '↓' : '↑'}</button>
+          </div>
+          <ul>{this.state.ascending ? moves : moves.reverse()}</ul>
         </div>
       </div>
     );
