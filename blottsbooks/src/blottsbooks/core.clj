@@ -1,9 +1,8 @@
 (ns blottsbooks.core
+  (:require blottsbooks.pricing)
   (:gen-class))
 
-(defn say-welcome [what]
-  (println "Welcome to" what "!"))
-
-(defn -main
-  [& args]
-  (say-welcome "Blotts Books"))
+(defn -main []
+  (println
+    (blottsbooks.pricing/discount-price
+      {:title "Emma" :price 9.99})))
