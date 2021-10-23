@@ -7,6 +7,7 @@
     (q/frame-rate 30)
     ; Set color mode to HSB (HSV) instead of default RGB.
     (q/color-mode :hsb)
+    (q/background 0)
     ; setup function returns initial state. It contains
     ; circle color and position.
     {:t 0})
@@ -16,8 +17,6 @@
     {:t (mod (+ (:t state) (q/random 5 20)) (q/height))})
   
   (defn draw-state [state]
-    ; Clear the sketch by filling it with light-grey color.
-    ;(q/background 240)
     ; Calculate x and y coordinates of the circle.
     (q/stroke (q/random 255) 255 255)
     (let [t (:t state)]
