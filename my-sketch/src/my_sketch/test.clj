@@ -6,21 +6,22 @@
     ; Set frame rate to 30 frames per second.
     (q/frame-rate 30)
     ; Set color mode to HSB (HSV) instead of default RGB.
-    ;(q/color-mode :hsb)
+    (q/color-mode :hsb)
     ; setup function returns initial state. It contains
     ; circle color and position.
     {:t 0})
   
   (defn update-state [state]
     ; Update sketch state by changing circle color and position.
-    {:t (mod (+ (:t state) 20) (q/height))})
+    {:t (mod (+ (:t state) (q/random 5 20)) (q/height))})
   
   (defn draw-state [state]
     ; Clear the sketch by filling it with light-grey color.
     ;(q/background 240)
     ; Calculate x and y coordinates of the circle.
+    (q/stroke (q/random 255) 255 255)
     (let [t (:t state)]
-        (q/line [0 t] [(/ t 2) (q/width)])))
+        (q/line [0 t] [t (q/width)])))
   
   
   (q/defsketch my-sketch
