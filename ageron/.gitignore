@@ -6,3 +6,5 @@ lib
 pyvenv.cfg
 share
 images
+*.h5
+my_logs/
