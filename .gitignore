@@ -2,6 +2,7 @@
 hypia20210810/
 .DS_Store
 my-app/node_modules
+ageron/flower_cnn
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
