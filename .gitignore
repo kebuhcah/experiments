@@ -3,6 +3,7 @@ hypia20210810/
 .DS_Store
 my-app/node_modules
 ageron/flower_cnn
+ageron/shakespeare_rnn
 ageron/simple_rnn
 
 # Byte-compiled / optimized / DLL files
