@@ -1,6 +1,7 @@
-*.tiff
 
 #custom
+rasterio/data/
+*.tiff
 hypia20210810/
 .DS_Store
 my-app/node_modules
