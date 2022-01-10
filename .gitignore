@@ -1,3 +1,5 @@
+*.tiff
+
 #custom
 hypia20210810/
 .DS_Store
