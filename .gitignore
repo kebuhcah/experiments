@@ -138,3 +138,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+ageron/shakespeare_rnn_2/keras_metadata.pb
+ageron/shakespeare_rnn_2/saved_model.pb
+ageron/shakespeare_rnn_2/variables/variables.data-00000-of-00001
+ageron/shakespeare_rnn_2/variables/variables.index
