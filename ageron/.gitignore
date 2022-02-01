@@ -8,3 +8,4 @@ share
 images
 *.h5
 my_logs/
+aclImdb/

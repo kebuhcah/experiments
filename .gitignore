@@ -8,6 +8,8 @@ my-app/node_modules
 ageron/flower_cnn
 ageron/shakespeare_rnn
 ageron/simple_rnn
+tensorflow-hub/aclImdb/
+tensorflow-hub/imdb_bert
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -138,3 +140,13 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+ageron/shakespeare_rnn_2/keras_metadata.pb
+ageron/shakespeare_rnn_2/saved_model.pb
+ageron/shakespeare_rnn_2/variables/variables.data-00000-of-00001
+ageron/shakespeare_rnn_2/variables/variables.index
+ageron/shakespeare_rnn_3/keras_metadata.pb
+ageron/shakespeare_rnn_3/saved_model.pb
+ageron/shakespeare_rnn_3/variables/variables.data-00000-of-00001
+ageron/shakespeare_rnn_3/variables/variables.index
+tensorflow-hub/aclImdb/imdb.vocab
+tensorflow-hub/aclImdb_v1.tar.gz
