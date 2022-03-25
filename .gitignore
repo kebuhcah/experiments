@@ -1,5 +1,6 @@
 
 #custom
+exchange_scrape/
 rasterio/data/
 *.tiff
 hypia20210810/
