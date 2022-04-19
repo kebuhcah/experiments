@@ -53,7 +53,8 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 /// # Example
 ///
 /// ```
-/// search("frick", "science fricktion");
+/// let r = minigrep::search("frick", "science fricktion\npeepee poopoo");
+/// assert_eq!(r, ["science fricktion"])
 /// ```
 pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
     contents
