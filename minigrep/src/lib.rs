@@ -1,3 +1,8 @@
+//! # My Crate
+//!
+//! `my_crate` is a fake crate to show how stuff works.
+
+
 use std::fs;
 use std::env;
 use std::error::Error;
