@@ -11,6 +11,8 @@ ageron/shakespeare_rnn
 ageron/simple_rnn
 tensorflow-hub/aclImdb/
 tensorflow-hub/imdb_bert
+*.bin
+*.gz
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
