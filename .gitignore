@@ -13,6 +13,8 @@ tensorflow-hub/aclImdb/
 tensorflow-hub/imdb_bert
 *.bin
 *.gz
+*.vec
+nextjs/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
