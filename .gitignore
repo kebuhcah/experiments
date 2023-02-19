@@ -15,6 +15,7 @@ tensorflow-hub/imdb_bert
 *.gz
 *.vec
 nextjs/
+dict_cc_de.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
