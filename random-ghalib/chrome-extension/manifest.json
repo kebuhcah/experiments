@@ -1,0 +1,12 @@
+{
+    "manifest_version": 3,
+    "name": "Random Ghalib",
+    "version": "1.0",
+    "description": "Navigate to a random Ghalib verse",
+    "background": {
+      "service_worker": "background.js"
+    },
+    "action": {
+      "default_icon": "desert_roses.png"
+    }
+  }
