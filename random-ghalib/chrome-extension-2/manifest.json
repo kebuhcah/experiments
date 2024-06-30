@@ -1,0 +1,12 @@
+{
+    "manifest_version": 3,
+    "name": "Random Hindustani",
+    "version": "1.0",
+    "description": "Navigate to a random page of Platt's Hindustani Dictionary ",
+    "background": {
+      "service_worker": "background.js"
+    },
+    "action": {
+      "default_icon": "urdu.png"
+    }
+  }
