@@ -1,0 +1,12 @@
+{
+    "manifest_version": 3,
+    "name": "Random Olive Tree",
+    "version": "1.0",
+    "description": "Navigate to a random page of the Olive Tree Dictionary of Palestinian Arabic",
+    "background": {
+      "service_worker": "background.js"
+    },
+    "action": {
+      "default_icon": "falastin.png"
+    }
+  }
