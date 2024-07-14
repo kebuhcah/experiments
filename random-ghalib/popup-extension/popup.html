@@ -1,40 +1,43 @@
 <!doctype html>
 <html>
-  <head>
+
+<head>
     <title>Random Page Selector Popup</title>
     <style>
-      body {
-        text-align: center;
-      }
+        body {
+            text-align: center;
+        }
 
-      #slotMachineImage {
-        width: 100px;
-        margin: 5px;
-      }
+        #slotMachineImage {
+            width: 100px;
+            margin: 5px;
+        }
 
-      button {
-        margin: 5px;
-        outline: none;
-        width: 100%;
-      }
+        button {
+            margin: 5px;
+            outline: none;
+            width: 100%;
+        }
 
-      button:hover {
-        outline: red dotted thick;
-      }
+        button:hover {
+            outline: red dotted thick;
+        }
     </style>
     <!--
       - JavaScript and HTML must be in separate files
      -->
-  </head>
-  <body>
+</head>
+
+<body>
     <img src="./slot-machine.png" id="slotMachineImage" />
     <!-- An Alarm delay of less than the minimum 1 minute will fire
       in approximately 1 minute increments if released -->
-    <button id="de">German</button>
-    <button id="es">Spanish</button>
     <button id="fr">French</button>
+    <button id="de">German</button>
     <button id="jp">Japanese</button>
     <button id="ru">Russian</button>
+    <button id="es">Spanish</button>
     <script src="popup.js"></script>
-  </body>
+</body>
+
 </html>
