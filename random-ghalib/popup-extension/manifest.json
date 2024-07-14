@@ -1,0 +1,10 @@
+{
+    "manifest_version": 3,
+    "name": "Random Page Selector",
+    "version": "1.0",
+    "description": "Show random page from multiple sources",
+    "action": {
+      "default_icon": "slot-machine.png",
+      "default_popup": "popup.html"
+    }
+  }
