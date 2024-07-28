@@ -36,6 +36,12 @@ function gotoRandomSpanishUrl() {
     chrome.tabs.update({ url });
 }
 
+function gotoRandomTeluguUrl() {
+    const url =  `https://dsal.uchicago.edu/dictionaries/gwynn/jpg/${(1+(Math.floor(Math.random() * 574))).toString().padStart(3, "0")}.jpg`;
+    chrome.tabs.update({ url });
+}
+
+
 // An Alarm delay of less than the minimum 1 minute will fire
 // in approximately 1 minute increments if released
 document.getElementById('fr').addEventListener('click', gotoRandomFrenchUrl);
@@ -45,3 +51,4 @@ document.getElementById('jp').addEventListener('click', gotoRandomJapaneseUrl);
 document.getElementById('apc').addEventListener('click', gotoRandomLevantineUrl);
 document.getElementById('ru').addEventListener('click', gotoRandomRussianUrl);
 document.getElementById('es').addEventListener('click', gotoRandomSpanishUrl);
+document.getElementById('te').addEventListener('click', gotoRandomTeluguUrl);
