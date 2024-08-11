@@ -56,6 +56,9 @@ MANIFEST
 pip-log.txt
 pip-delete-this-directory.txt
 
+# mkdocs site files
+mkdocs/*/site/*
+
 # Unit test / coverage reports
 htmlcov/
 .tox/
