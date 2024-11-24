@@ -1,5 +1,14 @@
 'use strict';
 
+// reminder: use pdftoppm to convert PDFs to JPEG pages
+// example: pdftoppm -jpeg cyclonopedia.pdf -f 23 -l 237 cyclonopedia_pages/page
+
+function gotoRandomCyclonopediaUrl() {
+    const url =  `file:///Users/sunkev/Downloads/cyclonopedia_pages/page-${(23+(Math.floor(Math.random() * 214))).toString().padStart(3, "0")}.jpg`;
+    chrome.tabs.update({ url });
+}
+
+
 function gotoRandomFrenchUrl() {
     const url =  `file:///Users/sunkev/Downloads/french_synonym_pages/page-${(18+(Math.floor(Math.random() * 465))).toString().padStart(3, "0")}.jpg`;
     chrome.tabs.update({ url });
@@ -41,9 +50,7 @@ function gotoRandomTeluguUrl() {
     chrome.tabs.update({ url });
 }
 
-
-// An Alarm delay of less than the minimum 1 minute will fire
-// in approximately 1 minute increments if released
+document.getElementById('cyclo').addEventListener('click', gotoRandomCyclonopediaUrl);
 document.getElementById('fr').addEventListener('click', gotoRandomFrenchUrl);
 document.getElementById('de').addEventListener('click', gotoRandomGermanUrl);
 document.getElementById('hi').addEventListener('click', gotoRandomHindustaniUrl);
