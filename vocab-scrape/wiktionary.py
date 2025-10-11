@@ -5,7 +5,7 @@ app = marimo.App(width="medium")
 
 
 @app.cell
-def _(Console):
+def _():
     import time
     from functools import lru_cache
     from urllib.parse import unquote
@@ -17,7 +17,6 @@ def _(Console):
     from bs4 import BeautifulSoup
 
     chime.theme("pokemon")
-    console = Console()
 
     DOMAIN_ROOT = "https://en.wiktionary.org"
     CATEGORY_ROOT = "https://en.wiktionary.org/wiki/Category:Borrowed_terms_by_language"
@@ -57,12 +56,12 @@ def _(CATEGORY_ROOT, get_soup):
 
 
 @app.cell
-def _(get_soup, utils):
+def _(get_soup):
     def get_next_page_urls(url):
         result = [url]
         try:
             soup = get_soup(url)
-        except utils.HTTPError:
+        except:
             return result
         
         next_page_links = [a for a in soup.find_all("a") if a.text=="next page"]
@@ -72,7 +71,7 @@ def _(get_soup, utils):
             result.append(next_url)
             try:
                 soup = get_soup(next_url)
-            except utils.HTTPError:
+            except:
                 return result
             next_page_links = [a for a in soup.find_all("a") if a.text=="next page"]
 
@@ -82,11 +81,11 @@ def _(get_soup, utils):
 
 
 @app.cell
-def _(DOMAIN_ROOT, get_soup, utils):
+def _(DOMAIN_ROOT, get_soup):
     def get_category_item_urls(url):
         try:
             soup = get_soup(url)
-        except utils.HTTPError:
+        except:
             return []
         return [DOMAIN_ROOT + div.find_all("a")[-1].attrs["href"] for div in soup.find_all("div", class_="CategoryTreeItem")]
     return (get_category_item_urls,)
@@ -107,18 +106,24 @@ def _(CATEGORY_ROOT, get_category_item_urls):
 @app.cell
 def _(CATEGORY_ROOT, get_category_item_urls, get_next_page_urls):
     urls = [[get_next_page_urls(level2_url) for level2_url in get_category_item_urls(level1_url)] for level1_url in get_next_page_urls(CATEGORY_ROOT)]
+    return (urls,)
+
+
+@app.cell
+def _(urls):
+    lemmas = [level3 for page in urls[1:] for level2 in page for level3 in level2]
+    return (lemmas,)
+
+
+@app.cell
+def _(lemmas):
+    lemmas
     return
 
 
 @app.cell
-def _(get_soup):
-    get_soup("https://en.wiktionary.org/wiki/Category:Pa%27o_Karen_borrowed_terms")
-    return
-
-
-@app.cell
-def _(root):
-    [a for a in root.find("a") if a.text=="next page"][0].attrs['href']
+def _(get_category_item_urls):
+    get_category_item_urls("https://en.wiktionary.org/wiki/Category:Chechen_borrowed_terms")
     return
 
 
