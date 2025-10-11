@@ -5,7 +5,7 @@ app = marimo.App(width="medium")
 
 
 @app.cell
-def _():
+def _(Console):
     import time
     from functools import lru_cache
     from urllib.parse import unquote
@@ -13,29 +13,47 @@ def _():
     import chime
     import marimo as mo
     import pandas as pd
-    from gazpacho import Soup, utils
-    from rich.console import Console
+    import requests
+    from bs4 import BeautifulSoup
 
     chime.theme("pokemon")
     console = Console()
 
     DOMAIN_ROOT = "https://en.wiktionary.org"
     CATEGORY_ROOT = "https://en.wiktionary.org/wiki/Category:Borrowed_terms_by_language"
-    return CATEGORY_ROOT, DOMAIN_ROOT, Soup, lru_cache, unquote, utils
+
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36'
+    }
+
+    return (
+        BeautifulSoup,
+        CATEGORY_ROOT,
+        DOMAIN_ROOT,
+        headers,
+        lru_cache,
+        requests,
+    )
 
 
 @app.cell
-def _(Soup, lru_cache, unquote):
+def _(BeautifulSoup, headers, lru_cache, requests):
     @lru_cache
     def get_soup(url):
-        if '%' in url:
-            url = unquote(url)
+        #if '%' in url:
+        #    url = unquote(url)
         try:
-            return Soup.get(url)
+            return BeautifulSoup(requests.get(url, headers=headers).text, "html.parser")
         except Exception as e:
             print(f"Failed to load url {url}")
             raise(e)
     return (get_soup,)
+
+
+@app.cell
+def _(CATEGORY_ROOT, get_soup):
+    soup = get_soup(CATEGORY_ROOT)
+    return
 
 
 @app.cell
@@ -47,7 +65,7 @@ def _(get_soup, utils):
         except utils.HTTPError:
             return result
         
-        next_page_links = [a for a in soup.find("a") if a.text=="next page"]
+        next_page_links = [a for a in soup.find_all("a") if a.text=="next page"]
 
         while len(next_page_links) > 0:
             next_url = "https://en.wiktionary.org" + next_page_links[-1].attrs["href"]
@@ -56,7 +74,7 @@ def _(get_soup, utils):
                 soup = get_soup(next_url)
             except utils.HTTPError:
                 return result
-            next_page_links = [a for a in soup.find("a") if a.text=="next page"]
+            next_page_links = [a for a in soup.find_all("a") if a.text=="next page"]
 
         return result
     
@@ -70,7 +88,7 @@ def _(DOMAIN_ROOT, get_soup, utils):
             soup = get_soup(url)
         except utils.HTTPError:
             return []
-        return [DOMAIN_ROOT + div.find("a")[-1].attrs["href"] for div in soup.find("div", {"class": "CategoryTreeItem"})]
+        return [DOMAIN_ROOT + div.find_all("a")[-1].attrs["href"] for div in soup.find_all("div", class_="CategoryTreeItem")]
     return (get_category_item_urls,)
 
 
@@ -89,6 +107,12 @@ def _(CATEGORY_ROOT, get_category_item_urls):
 @app.cell
 def _(CATEGORY_ROOT, get_category_item_urls, get_next_page_urls):
     urls = [[get_next_page_urls(level2_url) for level2_url in get_category_item_urls(level1_url)] for level1_url in get_next_page_urls(CATEGORY_ROOT)]
+    return
+
+
+@app.cell
+def _(get_soup):
+    get_soup("https://en.wiktionary.org/wiki/Category:Pa%27o_Karen_borrowed_terms")
     return
 
 
