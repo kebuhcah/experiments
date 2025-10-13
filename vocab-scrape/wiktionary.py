@@ -139,13 +139,54 @@ def _(get_category_item_urls, get_next_page_urls, level3_categories, tqdm):
 
 @app.cell
 def _(level4_categories):
-    level4_categories
+    level4_categories_flat = [j for i in level4_categories.values() for j in i]
+    level4_categories_flat
+    return (level4_categories_flat,)
+
+
+@app.cell
+def _(DOMAIN_ROOT, get_soup):
+    def get_category_term_urls(url):
+        try:
+            soup = get_soup(url)
+        except:
+            return []
+        return [DOMAIN_ROOT + div.find_all("a")[-1].attrs["href"] for div in soup.find_all("div", class_="mw-category")]
+
+    get_category_term_urls("https://en.wiktionary.org/wiki/Category:Abkhaz_terms_borrowed_from_Abaza")
+    return (get_category_term_urls,)
+
+
+@app.cell
+def _(
+    get_category_term_urls,
+    get_next_page_urls,
+    level4_categories_flat,
+    tqdm,
+):
+    borrowed_terms = {}
+
+    for category in tqdm(level4_categories_flat):
+        if not "_borrowed_from_" in category:
+            continue
+        term_urls = []
+        category_pages = get_next_page_urls(category)
+        for category_page in category_pages:
+            results = get_category_term_urls(category_page)
+            term_urls.extend(results)
+        borrowed_terms[category.split(":")[-1]] = term_urls
+    return (borrowed_terms,)
+
+
+@app.cell
+def _(borrowed_terms, pd):
+    pd.Series({k:len(v) for k,v in borrowed_terms.items()}).sort_values(ascending=False)
     return
 
 
 @app.cell
-def _(level4_categories, pd):
-    pd.Series({k:len(v) for k,v in level4_categories.items()}).sort_values(ascending=False)
+def _(borrowed_terms):
+    borrowed_terms
     return
 
 
