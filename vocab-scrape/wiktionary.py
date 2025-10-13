@@ -31,6 +31,7 @@ def _():
         DOMAIN_ROOT,
         headers,
         lru_cache,
+        pd,
         requests,
     )
 
@@ -111,19 +112,19 @@ def _(CATEGORY_ROOT, get_category_item_urls, get_next_page_urls):
 
 @app.cell
 def _(urls):
-    lemmas = [level3 for page in urls[1:] for level2 in page for level3 in level2]
-    return (lemmas,)
+    level3_categories = [level3 for page in urls for level2 in page for level3 in level2 if level3.endswith('borrowed_terms')]
+    return (level3_categories,)
 
 
 @app.cell
-def _(lemmas):
-    lemmas
-    return
+def _(get_category_item_urls, level3_categories):
+    level4_categories = {level3.split(":")[-1]: get_category_item_urls(level3) for level3 in level3_categories}
+    return (level4_categories,)
 
 
 @app.cell
-def _(get_category_item_urls):
-    get_category_item_urls("https://en.wiktionary.org/wiki/Category:Chechen_borrowed_terms")
+def _(level4_categories, pd):
+    pd.Series({k: len(v) for k,v in level4_categories.items()}).sort_values(ascending=False)
     return
 
 
