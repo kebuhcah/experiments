@@ -37,6 +37,12 @@ def _():
 
 
 @app.cell
+def _():
+    from tqdm import tqdm
+    return (tqdm,)
+
+
+@app.cell
 def _(BeautifulSoup, headers, lru_cache, requests):
     @lru_cache
     def get_soup(url):
@@ -117,14 +123,29 @@ def _(urls):
 
 
 @app.cell
-def _(get_category_item_urls, level3_categories):
-    level4_categories = {level3.split(":")[-1]: get_category_item_urls(level3) for level3 in level3_categories}
+def _(get_category_item_urls, get_next_page_urls, level3_categories, tqdm):
+    # level4_categories = {level3.split(":")[-1]: get_category_item_urls(level3) for level3 in level3_categories}
+
+    level4_categories = {}
+
+    for level3 in tqdm(level3_categories):
+        level4_urls = []
+        next_pages = get_next_page_urls(level3)
+        for page in next_pages:
+            level4_urls.extend(get_category_item_urls(page))
+        level4_categories[level3.split(":")[-1]] = level4_urls
     return (level4_categories,)
 
 
 @app.cell
+def _(level4_categories):
+    level4_categories
+    return
+
+
+@app.cell
 def _(level4_categories, pd):
-    pd.Series({k: len(v) for k,v in level4_categories.items()}).sort_values(ascending=False)
+    pd.Series({k:len(v) for k,v in level4_categories.items()}).sort_values(ascending=False)
     return
 
 
