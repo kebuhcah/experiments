@@ -24,7 +24,6 @@ def _():
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36'
     }
-
     return (
         BeautifulSoup,
         CATEGORY_ROOT,
@@ -70,7 +69,7 @@ def _(get_soup):
             soup = get_soup(url)
         except:
             return result
-        
+
         next_page_links = [a for a in soup.find_all("a") if a.text=="next page"]
 
         while len(next_page_links) > 0:
@@ -83,7 +82,7 @@ def _(get_soup):
             next_page_links = [a for a in soup.find_all("a") if a.text=="next page"]
 
         return result
-    
+
     return (get_next_page_urls,)
 
 
@@ -151,9 +150,12 @@ def _(DOMAIN_ROOT, get_soup):
             soup = get_soup(url)
         except:
             return []
-        return [DOMAIN_ROOT + div.find_all("a")[-1].attrs["href"] for div in soup.find_all("div", class_="mw-category")]
+        category_divs = soup.find_all("div", class_="mw-category-group")
+        if len(category_divs) == 0:
+            return []
+        return [DOMAIN_ROOT + a.attrs["href"] for a in category_divs[-1].find_all("a")]
 
-    get_category_term_urls("https://en.wiktionary.org/wiki/Category:Abkhaz_terms_borrowed_from_Abaza")
+    get_category_term_urls("https://en.wiktionary.org/wiki/Category:English_terms_borrowed_from_French")
     return (get_category_term_urls,)
 
 
@@ -167,6 +169,7 @@ def _(
     borrowed_terms = {}
 
     for category in tqdm(level4_categories_flat):
+        #print(category)
         if not "_borrowed_from_" in category:
             continue
         term_urls = []
@@ -179,14 +182,14 @@ def _(
 
 
 @app.cell
-def _(borrowed_terms, pd):
-    pd.Series({k:len(v) for k,v in borrowed_terms.items()}).sort_values(ascending=False)
+def _(borrowed_terms):
+    borrowed_terms
     return
 
 
 @app.cell
-def _(borrowed_terms):
-    borrowed_terms
+def _(borrowed_terms, pd):
+    pd.Series({k:len(v) for k,v in borrowed_terms.items()}).sort_values(ascending=False)
     return
 
 
