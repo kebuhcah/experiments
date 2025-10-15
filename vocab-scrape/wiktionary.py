@@ -32,6 +32,7 @@ def _():
         lru_cache,
         pd,
         requests,
+        unquote,
     )
 
 
@@ -153,7 +154,7 @@ def _(DOMAIN_ROOT, get_soup):
         category_divs = soup.find_all("div", class_="mw-category-group")
         if len(category_divs) == 0:
             return []
-        return [DOMAIN_ROOT + a.attrs["href"] for a in category_divs[-1].find_all("a")]
+        return [DOMAIN_ROOT + a.attrs.get("href", "ERROR") for a in category_divs[-1].find_all("a")]
 
     get_category_term_urls("https://en.wiktionary.org/wiki/Category:English_terms_borrowed_from_French")
     return (get_category_term_urls,)
@@ -188,8 +189,26 @@ def _(borrowed_terms):
 
 
 @app.cell
-def _(borrowed_terms, pd):
-    pd.Series({k:len(v) for k,v in borrowed_terms.items()}).sort_values(ascending=False)
+def _(borrowed_terms, pd, unquote):
+    import numpy as np
+
+
+    (pd.Series({k:len(v) for k,v in borrowed_terms.items()})
+     .sort_values(ascending=False).rename("terms").rename_axis("category").reset_index()
+     .assign(debtor=lambda x: x.category.str.split("_terms_borrowed_from_").str[0].apply(unquote).str.replace("_", " "))
+     .assign(creditor=lambda x: x.category.str.split("_terms_borrowed_from_").str[-1].apply(unquote).str.replace("_", " "))
+     .set_index(["debtor", "creditor"]).terms.unstack()
+     .assign(total=lambda x: x.sum(axis=1)).sort_values("total", ascending=False).drop(columns="total").T
+     .assign(total=lambda x: x.sum(axis=1)).sort_values("total", ascending=False).drop(columns="total").T
+     [:50].T[:50].T
+     .pipe(lambda x: x.fillna(0).astype(int)
+         .style.background_gradient(cmap="viridis", vmin=0, axis=None, 
+                                    gmap=x.fillna(1).astype(int).pipe(np.log)))
+     .set_table_styles([
+        dict(selector='th', props=[('text-align', 'center')]),  # Center align headers
+        dict(selector='td', props=[('text-align', 'center')])   # Center align data cells
+    ])
+    )
     return
 
 
